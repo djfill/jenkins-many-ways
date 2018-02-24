@@ -1,0 +1,28 @@
+---
+- name: Spin up a Jenkins box on AWS
+  hosts: localhost
+  gather_facts: no
+  vars:
+    aws_access_key: 
+    aws_secret_key: 
+    key_name: 
+    group_id: 
+    instance_type: t2.micro
+    image: ami-048ca661
+    region: us-east-2 
+  tasks:
+  - name: Create aws vm
+    ec2:
+       key_name: "{{ key_name }}"
+       group_id: "{{  group_id  }}"
+       instance_type: "{{ instance_type }}"
+       image: "{{ image }}"
+       region: "{{ region }}"
+       wait: true
+       exact_count: 1
+       count_tag:
+          Name: Jenkins
+       instance_tags:
+          Name: Jenkins
+    register: ec2
+
